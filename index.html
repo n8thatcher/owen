@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Owen's Code!</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #1a1a2e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      padding: 32px;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    h1 {
+      color: #c0c8ff;
+      font-size: 2rem;
+      letter-spacing: 2px;
+    }
+
+    canvas {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 0 40px #7c83f755;
+    }
+
+    #btn1 {
+      padding: 14px 48px;
+      font-size: 20px;
+      font-weight: bold;
+      background: #7c83f7;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: background 0.15s;
+    }
+
+    #btn1:hover {
+      background: #5c63d7;
+    }
+
+    #btn1:active {
+      background: #3c43b7;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Owen's Code!</h1>
+  <canvas id="canvas" width="800" height="600"></canvas>
+  <button id="btn1">Button 1</button>
+
+  <script type="module">
+    import { main, onButtonClick } from './owen.ts';
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let currentColor = 'black';
+
+    const page = {
+      setColor(color) {
+        currentColor = color;
+        ctx.fillStyle = color;
+        ctx.strokeStyle = color;
+      },
+      printText(text, x, y) {
+        ctx.fillStyle = currentColor;
+        ctx.font = '24px monospace';
+        ctx.fillText(text, x, y);
+      },
+      drawRect(x, y, height, width) {
+        ctx.fillStyle = currentColor;
+        ctx.fillRect(x, y, width, height);
+      },
+      showImage(url, x, y) {
+        const img = new Image();
+        img.onload = () => ctx.drawImage(img, x, y);
+        img.src = url;
+      }
+    };
+
+    document.getElementById('btn1').addEventListener('click', () => onButtonClick(page));
+
+    main(page);
+  </script>
+</body>
+
+</html>
