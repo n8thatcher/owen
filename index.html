@@ -12,89 +12,82 @@
       padding: 0;
     }
 
-    body {
-      min-height: 100vh;
-      background: #1a1a2e;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 24px;
-      padding: 32px;
+    html, body {
+      height: 100%;
       font-family: 'Segoe UI', sans-serif;
     }
 
-    h1 {
-      color: #c0c8ff;
-      font-size: 2rem;
-      letter-spacing: 2px;
+    body {
+      display: flex;
+      height: 100vh;
+      background: #1a1a2e;
     }
 
-    canvas {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 0 40px #7c83f755;
+    nav {
+      width: 140px;
+      min-width: 140px;
+      background: #12122a;
+      display: flex;
+      flex-direction: column;
+      padding: 24px 0;
+      gap: 4px;
+      border-right: 2px solid #2e2e55;
     }
 
-    #btn1 {
-      padding: 14px 48px;
-      font-size: 20px;
+    nav .nav-title {
+      color: #7c83f7;
+      font-size: 13px;
       font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 0 18px 16px;
+      border-bottom: 1px solid #2e2e55;
+      margin-bottom: 8px;
+    }
+
+    nav a {
+      color: #9099cc;
+      text-decoration: none;
+      padding: 10px 18px;
+      border-radius: 0 8px 8px 0;
+      font-size: 15px;
+      font-weight: 500;
+      margin-right: 8px;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    nav a:hover {
+      background: #2a2a4e;
+      color: #c0c8ff;
+    }
+
+    nav a.active {
       background: #7c83f7;
       color: white;
+    }
+
+    iframe {
+      flex: 1;
       border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      letter-spacing: 1px;
-      transition: background 0.15s;
-    }
-
-    #btn1:hover {
-      background: #5c63d7;
-    }
-
-    #btn1:active {
-      background: #3c43b7;
+      height: 100%;
     }
   </style>
 </head>
 
 <body>
-  <h1>Owen's Code!</h1>
-  <canvas id="canvas" width="800" height="600"></canvas>
-  <button id="btn1">Button 1</button>
+  <nav>
+    <div class="nav-title">Owen</div>
+    <a href="#" id="link-owen1" class="active" onclick="loadPage('pages/owen1.html', this)">Owen 1</a>
+    <a href="#" id="link-owen2" onclick="loadPage('pages/owen2.html', this)">Owen 2</a>
+  </nav>
+  <iframe id="content" src="pages/owen1.html"></iframe>
 
-  <script type="module">
-    import { main, onButtonClick } from './owen.ts';
-
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    let currentColor = 'black';
-
-    const page = {
-      setColor(color) {
-        currentColor = color;
-        ctx.fillStyle = color;
-        ctx.strokeStyle = color;
-      },
-      printText(text, x, y) {
-        ctx.fillStyle = currentColor;
-        ctx.font = '24px monospace';
-        ctx.fillText(text, x, y);
-      },
-      drawRect(x, y, height, width) {
-        ctx.fillStyle = currentColor;
-        ctx.fillRect(x, y, width, height);
-      },
-      showImage(url, x, y) {
-        const img = new Image();
-        img.onload = () => ctx.drawImage(img, x, y);
-        img.src = url;
-      }
-    };
-
-    document.getElementById('btn1').addEventListener('click', () => onButtonClick(page));
-
-    main(page);
+  <script>
+    function loadPage(url, linkEl) {
+      document.getElementById('content').src = url;
+      document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+      linkEl.classList.add('active');
+    }
   </script>
 </body>
 

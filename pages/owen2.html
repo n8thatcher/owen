@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Owen's Code 2!</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #1a1a2e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      padding: 32px;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    h1 {
+      color: #c0c8ff;
+      font-size: 2rem;
+      letter-spacing: 2px;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      align-self: flex-start;
+    }
+
+    .toggle-label {
+      color: #c0c8ff;
+      font-size: 18px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      min-width: 48px;
+    }
+
+    .toggle-label.right {
+      text-align: left;
+    }
+
+    .toggle-label.left {
+      text-align: right;
+    }
+
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 56px;
+      height: 30px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background: #3a3a5e;
+      border-radius: 30px;
+      transition: background 0.2s;
+      border: 2px solid #7c83f7;
+    }
+
+    .slider::before {
+      content: '';
+      position: absolute;
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background: #7c83f7;
+      border-radius: 50%;
+      transition: transform 0.2s;
+    }
+
+    input:checked + .slider {
+      background: #7c83f7;
+    }
+
+    input:checked + .slider::before {
+      transform: translateX(26px);
+      background: white;
+    }
+
+    canvas {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 0 40px #7c83f755;
+    }
+
+    #btn1 {
+      padding: 14px 48px;
+      font-size: 20px;
+      font-weight: bold;
+      background: #7c83f7;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      letter-spacing: 1px;
+      transition: background 0.15s;
+    }
+
+    #btn1:hover {
+      background: #5c63d7;
+    }
+
+    #btn1:active {
+      background: #3c43b7;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Owen's Code 2!</h1>
+
+  <div class="toggle-row">
+    <span class="toggle-label left">False</span>
+    <label class="toggle-switch">
+      <input type="checkbox" id="toggle">
+      <span class="slider"></span>
+    </label>
+    <span class="toggle-label right">True</span>
+  </div>
+
+  <canvas id="canvas" width="800" height="600"></canvas>
+  <button id="btn1">Button 1</button>
+
+  <script type="module">
+    import { main, onButtonClick } from '../owen2.ts';
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let currentColor = 'black';
+
+    const page = {
+      setColor(color) {
+        currentColor = color;
+        ctx.fillStyle = color;
+        ctx.strokeStyle = color;
+      },
+      printText(text, x, y) {
+        ctx.fillStyle = currentColor;
+        ctx.font = '24px monospace';
+        ctx.fillText(text, x, y);
+      },
+      drawRect(x, y, height, width) {
+        ctx.fillStyle = currentColor;
+        ctx.fillRect(x, y, width, height);
+      },
+      showImage(url, x, y) {
+        const img = new Image();
+        img.onload = () => ctx.drawImage(img, x, y);
+        img.src = url;
+      }
+    };
+
+    function getToggleValue() {
+      return document.getElementById('toggle').checked;
+    }
+
+    function resetAndRun() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      currentColor = 'black';
+      main(page, getToggleValue());
+    }
+
+    document.getElementById('toggle').addEventListener('change', resetAndRun);
+    document.getElementById('btn1').addEventListener('click', () => onButtonClick(page, getToggleValue()));
+
+    main(page, getToggleValue());
+  </script>
+</body>
+
+</html>
